@@ -1,7 +1,7 @@
-"""Etapas 5 e 7: o carrinho TEM uma promoção."""
+"""Etapas 5, 7 e 8: a promoção segue o contrato."""
 from .calculos import frete, total_carrinho
 from .produto import Produto
-from .promocao import SemPromocao
+from .promocao import Promocao, SemPromocao
 
 class CarrinhoFinalizadoError(Exception):
     """Levantada ao mexer num carrinho já finalizado."""
@@ -10,7 +10,10 @@ class Carrinho:
     def __init__(self, promocao=None):
         self._itens = []   # pares (produto, quantidade)
         self._finalizado = False
-        self.promocao = promocao or SemPromocao()
+        promocao = promocao or SemPromocao()
+        if not isinstance(promocao, Promocao):
+            raise TypeError("a promoção precisa seguir o contrato Promocao")
+        self.promocao = promocao
 
     def adicionar(self, produto, quantidade=1):
         if self._finalizado:

@@ -1,10 +1,18 @@
-"""Etapa 7: promoções trocáveis (Aula 7)."""
+"""Etapas 7 e 8: promoções com contrato (Aula 8)."""
+from abc import ABC, abstractmethod
 
-class SemPromocao:
+class Promocao(ABC):
+    """Contrato: aplicar devolve o valor com desconto."""
+
+    @abstractmethod
+    def aplicar(self, subtotal):
+        ...
+
+class SemPromocao(Promocao):
     def aplicar(self, subtotal):
         return subtotal
 
-class Percentual:
+class Percentual(Promocao):
     def __init__(self, pct):
         if not 0 <= pct <= 100:
             raise ValueError("percentual deve estar entre 0 e 100")
@@ -13,7 +21,7 @@ class Percentual:
     def aplicar(self, subtotal):
         return subtotal * (100 - self.pct) / 100
 
-class Cupom:
+class Cupom(Promocao):
     def __init__(self, valor):
         if valor < 0:
             raise ValueError("valor do cupom não pode ser negativo")
